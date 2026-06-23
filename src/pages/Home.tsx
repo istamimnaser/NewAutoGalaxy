@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowDown, Star, Shield, RefreshCw, Users, ChevronRight, Play } from 'lucide-react';
-import { cars, brands } from '../data/cars';
+import { brands } from '../data/cars';
+import { useCars } from '../hooks/useCars';
 import CarCard from '../components/CarCard';
 import CountUp from '../components/CountUp';
 
@@ -49,6 +50,7 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoReady, setVideoReady] = useState(false);
   const [heroCategory, setHeroCategory] = useState<string>('brand-new');
+  const { cars } = useCars();
   const featured = cars.filter(c => c.isFeatured).slice(0, 4);
 
   useEffect(() => {

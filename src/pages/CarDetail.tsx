@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Fuel, Users, Gauge, Palette, Cog, ChevronRight, Share2 } from 'lucide-react';
-import { cars, formatPrice } from '../data/cars';
+import { formatPrice } from '../data/cars';
+import { useCars } from '../hooks/useCars';
 
 const categoryLabel: Record<string, string> = {
   'brand-new': 'Brand New',
@@ -11,6 +12,7 @@ const categoryLabel: Record<string, string> = {
 
 export default function CarDetail() {
   const { id } = useParams();
+  const { cars } = useCars();
   const car = cars.find(c => c.id === id);
   const [activeImg, setActiveImg] = useState(0);
 

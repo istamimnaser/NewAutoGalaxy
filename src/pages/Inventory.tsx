@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { cars } from '../data/cars';
 import type { CarCategory } from '../types';
 import CarCard from '../components/CarCard';
+import { useCars } from '../hooks/useCars';
 
 const categories: { key: CarCategory | 'all'; label: string }[] = [
   { key: 'all', label: 'All Cars' },
@@ -12,9 +12,9 @@ const categories: { key: CarCategory | 'all'; label: string }[] = [
   { key: 'used', label: 'Used' },
 ];
 
-const brands = [...new Set(cars.map(c => c.brand))].sort();
-
 export default function Inventory() {
+  const { cars, loading } = useCars();
+  const brands = [...new Set(cars.map(c => c.brand))].sort();
   const [params, setParams] = useSearchParams();
   const [search, setSearch] = useState('');
   const [showFilters, setShowFilters] = useState(false);
@@ -131,7 +131,11 @@ export default function Inventory() {
         )}
 
         {/* Grid */}
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center py-24">
+            <div className="w-8 h-8 border-2 border-[#C8962A] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-24 text-white/30">
             <p className="text-xl mb-2">No cars found</p>
             <p className="text-sm">Try adjusting your search or filters</p>
