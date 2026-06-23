@@ -18,30 +18,21 @@ const categories = [
     title: 'Brand New',
     subtitle: 'Zero km · Factory Fresh',
     description: 'Direct imports from Japan, UK & UAE. Full manufacturer warranty.',
-    icon: '✦',
-    color: 'from-emerald-500/20 to-transparent',
-    border: 'border-emerald-500/30',
-    accent: 'text-emerald-400',
+    number: '01',
   },
   {
     key: 'reconditioned',
     title: 'Reconditioned',
     subtitle: 'Japan Grade · Auction Sheet',
     description: 'Certified pre-owned from Japan with full auction documentation.',
-    icon: '◈',
-    color: 'from-blue-500/20 to-transparent',
-    border: 'border-blue-500/30',
-    accent: 'text-blue-400',
+    number: '02',
   },
   {
     key: 'used',
     title: 'Used Cars',
     subtitle: 'Inspected · Verified',
     description: 'Quality checked used vehicles with verified documents and service history.',
-    icon: '◉',
-    color: 'from-orange-500/20 to-transparent',
-    border: 'border-orange-500/30',
-    accent: 'text-orange-400',
+    number: '03',
   },
 ];
 
@@ -174,18 +165,24 @@ export default function Home() {
             <Link
               key={cat.key}
               to={`/inventory?category=${cat.key}`}
-              className={`group relative p-8 rounded-2xl border bg-gradient-to-br ${cat.color} ${cat.border} overflow-hidden hover:scale-[1.02] transition-all duration-300`}
+              className="group relative p-8 rounded-2xl bg-[#111] border border-white/5 overflow-hidden hover:border-[#C8962A]/40 transition-all duration-300 hover:-translate-y-1"
             >
-              <div className="absolute inset-0 bg-[#111] opacity-80" />
+              {/* Subtle gold glow on hover */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at top left, rgba(200,150,42,0.07) 0%, transparent 70%)' }} />
+
               <div className="relative z-10">
-                <div className={`text-3xl mb-4 ${cat.accent}`}>{cat.icon}</div>
-                <h3 className="text-white text-2xl font-semibold mb-1">{cat.title}</h3>
-                <div className={`text-xs tracking-wider uppercase mb-4 ${cat.accent}`}>{cat.subtitle}</div>
-                <p className="text-white/50 text-sm leading-relaxed mb-6">{cat.description}</p>
-                <span className={`inline-flex items-center gap-2 text-sm ${cat.accent} group-hover:gap-3 transition-all`}>
+                <div className="text-[#C8962A]/30 font-bold text-5xl leading-none mb-6 select-none">{cat.number}</div>
+                <h3 className="text-white text-2xl font-semibold mb-2">{cat.title}</h3>
+                <div className="text-[#C8962A] text-xs tracking-widest uppercase mb-4">{cat.subtitle}</div>
+                <p className="text-white/40 text-sm leading-relaxed mb-8">{cat.description}</p>
+                <span className="inline-flex items-center gap-2 text-sm text-[#C8962A] group-hover:gap-3 transition-all duration-200">
                   Browse {cat.title} <ChevronRight size={14} />
                 </span>
               </div>
+
+              {/* Bottom gold line that grows on hover */}
+              <div className="absolute bottom-0 left-0 h-px w-0 group-hover:w-full bg-[#C8962A]/40 transition-all duration-500" />
             </Link>
           ))}
         </div>
