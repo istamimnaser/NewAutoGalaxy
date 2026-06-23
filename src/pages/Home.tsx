@@ -46,6 +46,8 @@ const values = [
 export default function Home() {
   const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
   const [heroCategory, setHeroCategory] = useState<string>('brand-new');
   const featured = cars.filter(c => c.isFeatured).slice(0, 4);
 
@@ -71,17 +73,25 @@ export default function Home() {
       <section className="relative h-screen min-h-[700px] flex items-end overflow-hidden">
         {/* Background — drop hero-bg.mp4 into public/images/showroom/ to activate video */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Video layer — plays when file exists, hidden otherwise */}
+          {/* Video layer — fades in only once it can play smoothly */}
           <video
+            ref={videoRef}
             autoPlay
             muted
             loop
             playsInline
+            preload="auto"
+            poster="/images/showroom/hero-bg.jpg"
+            onCanPlay={() => setVideoReady(true)}
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ display: 'block' }}
+            style={{
+              opacity: videoReady ? 1 : 0,
+              transition: 'opacity 1.2s ease',
+              willChange: 'opacity',
+            }}
           >
-            <source src="/images/showroom/hero-bg.mp4" type="video/mp4" />
             <source src="/images/showroom/hero-bg.webm" type="video/webm" />
+            <source src="/images/showroom/hero-bg.mp4" type="video/mp4" />
           </video>
 
           {/* Fallback image shown behind video (visible while video loads or if no video file) */}
