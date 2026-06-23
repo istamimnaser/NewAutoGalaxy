@@ -108,9 +108,9 @@ export default function Home() {
         {/* Content */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pb-20">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-[#C8962A] text-xs tracking-[0.3em] uppercase mb-6 border border-[#C8962A]/30 px-4 py-2 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#C8962A] animate-pulse" />
-              Premium Automotive Experience
+            <div className="flex items-center gap-3 mb-7">
+              <span className="block w-8 h-px bg-[#C8962A]" />
+              <span className="text-[#C8962A] text-xs tracking-[0.25em] uppercase font-medium">Dhaka, Bangladesh</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-light leading-[1.05] mb-6">
               <span className="text-white">Your Dream Car</span>

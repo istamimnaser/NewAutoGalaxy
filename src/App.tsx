@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppFAB from './components/WhatsAppFAB';
+import LoadingScreen from './components/LoadingScreen';
 import Home from './pages/Home';
 import Inventory from './pages/Inventory';
 import CarDetail from './pages/CarDetail';
@@ -12,6 +13,8 @@ import Contact from './pages/Contact';
 
 export default function App() {
   return (
+    <>
+    <LoadingScreen />
     <BrowserRouter>
       <Navbar />
       <Routes>
@@ -26,5 +29,6 @@ export default function App() {
       <Footer />
       <WhatsAppFAB />
     </BrowserRouter>
+    </>
   );
 }
