@@ -1,9 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-const url  = import.meta.env.VITE_SUPABASE_URL  as string;
-const key  = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const url = import.meta.env.VITE_SUPABASE_URL  as string;
+const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 
-export const supabase = createClient(url, key);
+// Use placeholder values if env vars are missing/invalid so the public site
+// never crashes — Supabase calls will fail silently on the admin side only.
+const safeUrl = url?.startsWith('https://') ? url : 'https://placeholder.supabase.co';
+const safeKey = key?.startsWith('eyJ')      ? key : 'eyJplaceholder';
+
+export const supabase = createClient(safeUrl, safeKey);
 
 // ── Types matching the Supabase tables ──────────────────────────────────────
 
