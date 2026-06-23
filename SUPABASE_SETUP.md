@@ -83,12 +83,14 @@ VITE_SUPABASE_ANON_KEY=eyJ...
 ```
 Find both values in **Settings → API** in Supabase.
 
-### Cloudflare Pages
-Go to **Cloudflare Pages → your project → Settings → Environment Variables** and add:
+### Vercel
+1. Go to **vercel.com → your project → Settings → Environment Variables**
+2. Add both variables for **Production**, **Preview**, and **Development**:
 ```
-VITE_SUPABASE_URL     = https://xxxxxxxxxxxx.supabase.co
+VITE_SUPABASE_URL      = https://xxxxxxxxxxxx.supabase.co
 VITE_SUPABASE_ANON_KEY = eyJ...
 ```
+3. After adding them, go to **Deployments → the latest deployment → Redeploy** so the new env vars take effect.
 
 ---
 
