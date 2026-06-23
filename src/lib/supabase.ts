@@ -6,7 +6,7 @@ const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 // Use placeholder values if env vars are missing/invalid so the public site
 // never crashes — Supabase calls will fail silently on the admin side only.
 const safeUrl = url?.startsWith('https://') ? url : 'https://placeholder.supabase.co';
-const safeKey = key?.startsWith('eyJ')      ? key : 'eyJplaceholder';
+const safeKey = key?.length > 10            ? key : 'eyJplaceholder';
 
 export const supabase = createClient(safeUrl, safeKey);
 
