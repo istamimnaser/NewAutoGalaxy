@@ -18,13 +18,18 @@ export default function AdminGallery() {
 
   useEffect(() => { load(); }, []);
 
+  const [uploadError, setUploadError] = useState('');
+
   const handleUpload = async (files: FileList) => {
     setUploading(true);
+    setUploadError('');
     for (const file of Array.from(files)) {
       const ext  = file.name.split('.').pop();
       const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
       const { error: upErr } = await supabase.storage.from('gallery-images').upload(path, file, { upsert: true });
-      if (!upErr) {
+      if (upErr) {
+        setUploadError(`Upload failed: ${upErr.message}. Make sure the "gallery-images" bucket exists in Supabase and is set to Public.`);
+      } else {
         const { data } = supabase.storage.from('gallery-images').getPublicUrl(path);
         await supabase.from('gallery').insert({ url: data.publicUrl, caption: file.name.replace(/\.[^/.]+$/, '') });
       }
@@ -60,6 +65,10 @@ export default function AdminGallery() {
         </button>
         <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={e => e.target.files && handleUpload(e.target.files)} />
       </div>
+
+      {uploadError && (
+        <div className="mb-4 text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">{uploadError}</div>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-20">

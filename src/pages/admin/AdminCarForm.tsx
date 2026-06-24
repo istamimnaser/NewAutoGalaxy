@@ -34,17 +34,44 @@ export default function AdminCarForm() {
 
   const uploadImages = async (files: FileList) => {
     setUploading(true);
-    const urls: string[] = [];
-    for (const file of Array.from(files)) {
+    setError('');
+
+    // Show local blob previews immediately so user sees the images
+    const fileArray = Array.from(files);
+    const blobs = fileArray.map(f => URL.createObjectURL(f));
+    setForm(f => ({ ...f, images: [...f.images, ...blobs] }));
+
+    const replacements: { blob: string; real: string }[] = [];
+    const uploadErrors: string[] = [];
+
+    for (let i = 0; i < fileArray.length; i++) {
+      const file = fileArray[i];
+      const blob = blobs[i];
       const ext  = file.name.split('.').pop();
       const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-      const { error } = await supabase.storage.from('car-images').upload(path, file, { upsert: true });
-      if (!error) {
+      const { error: upErr } = await supabase.storage.from('car-images').upload(path, file, { upsert: true });
+      if (upErr) {
+        uploadErrors.push(upErr.message);
+        // Remove the failed blob preview
+        setForm(f => ({ ...f, images: f.images.filter(img => img !== blob) }));
+      } else {
         const { data } = supabase.storage.from('car-images').getPublicUrl(path);
-        urls.push(data.publicUrl);
+        replacements.push({ blob, real: data.publicUrl });
       }
     }
-    setForm(f => ({ ...f, images: [...f.images, ...urls] }));
+
+    // Swap blob URLs with real Supabase URLs
+    if (replacements.length > 0) {
+      setForm(f => ({
+        ...f,
+        images: f.images.map(img => replacements.find(r => r.blob === img)?.real ?? img),
+      }));
+    }
+
+    if (uploadErrors.length > 0) {
+      setError(`Upload failed: ${uploadErrors[0]}. Make sure the "car-images" storage bucket exists in Supabase and is set to Public.`);
+    }
+
     setUploading(false);
   };
 
